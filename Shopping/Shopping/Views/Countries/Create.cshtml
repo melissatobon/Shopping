@@ -9,11 +9,11 @@
 <h4>País</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            
+            <input type="hidden" asp-for="States" />
             <partial name="_Country" />
 
             <div class="form-group mt-2">

@@ -1,17 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 
 namespace Shopping.Entities
 {
-    public class Country
+    public class City
     {
         public int Id { get; set; }
-        [Display(Name = "Pais")]
+        [Display(Name = "Ciudad")]
         [MaxLength(50, ErrorMessage = "El campo {0} debe tener máximo 50 caracteres")]
         [Required(ErrorMessage = "El campo {0} es obligatorio")]
         public string Name { get; set; }
-
-        public ICollection<State> States { get; set; }
-        [Display(Name ="Departamentos/Estados: ")]
-        public int StatesNumber => States == null ? 0 : States.Count;
+        public State State { get; set; }
     }
 }
