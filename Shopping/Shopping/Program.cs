@@ -36,6 +36,7 @@ builder.Services.AddTransient<SeedDb>(); //Se usa una sóla vez
 //builder.Services.AddScoped<SeedDb>(); //La inyecta cada vez que la necesita, lo destruye cuando lo deja de usar, es la mayoría
 //builder.Services.AddSingleton<SeedDb>(); //Lo inyecta una vez y no lo destruye, queda en memoria
 builder.Services.AddScoped<IUserHelper, UserHelper>();
+builder.Services.AddScoped<ICombosHelper, CombosHelper>();
 
 var app = builder.Build();
 SeedData();
