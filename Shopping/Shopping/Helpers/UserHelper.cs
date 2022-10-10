@@ -26,6 +26,34 @@ namespace Shopping.Helpers
             return await _userManager.CreateAsync(user, password); //Para crear el usuario, la clase usermanager tiene un metodo de crear y le mandamos el user y contraseña
         }
 
+        public async Task<User> AddUserAsync(AddUserViewModel model)
+        {
+            User user = new User
+            {
+                Address = model.Address,
+                Document = model.Document,
+                Email = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                ImageId = model.ImageId,
+                PhoneNumber = model.PhoneNumber,
+                City = await _context.Cities.FindAsync(model.CityId),
+                UserName = model.Username,
+                UserType = model.UserType
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            if (result != IdentityResult.Success)
+            {
+                return null;
+            }
+
+            User newUser = await GetUserAsync(model.Username);
+            await AddUserToRoleAsync(newUser, user.UserType.ToString());
+            return newUser;
+
+        }
+
         public async Task AddUserToRoleAsync(User user, string roleName)//Para asignar un rol
         {
             await _userManager.AddToRoleAsync(user, roleName);
