@@ -78,6 +78,16 @@ namespace Shopping.Helpers
 
         }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
+
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
+
         public async Task<User> GetUserAsync(string email) //Para buscar el usuario
         {
             return await _context.Users//busca en nuestro contexto de usuario
@@ -104,7 +114,7 @@ namespace Shopping.Helpers
 
         public async Task<SignInResult> LoginAsync(LoginViewModel model)
         {
-            return await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, false);
+            return await _signInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, true);
         }
 
         public async Task LogoutAsync()

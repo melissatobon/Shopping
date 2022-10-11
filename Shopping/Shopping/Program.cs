@@ -14,14 +14,21 @@ builder.Services.AddDbContext<DataContext>(o =>
 //TODO: Make strongest password
 builder.Services.AddIdentity<User, IdentityRole>(cfg =>
 {
+    cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
+    cfg.SignIn.RequireConfirmedEmail = true;
     cfg.User.RequireUniqueEmail = true;
     cfg.Password.RequireDigit = false;
     cfg.Password.RequiredUniqueChars = 0;
     cfg.Password.RequireLowercase = false;
     cfg.Password.RequireNonAlphanumeric = false;
     cfg.Password.RequireUppercase = false;
-    cfg.Password.RequiredLength = 6;
-}).AddEntityFrameworkStores<DataContext>();
+    cfg.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);// Al equivocarse 3 veces, se bloquea x minutos
+    cfg.Lockout.MaxFailedAccessAttempts = 3;//Máximo de intentos fallidos
+    cfg.Lockout.AllowedForNewUsers = true;
+
+})
+.AddDefaultTokenProviders()
+.AddEntityFrameworkStores<DataContext>();
 
 builder.Services.ConfigureApplicationCookie(options =>
 {
@@ -38,6 +45,7 @@ builder.Services.AddTransient<SeedDb>(); //Se usa una sóla vez
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 builder.Services.AddScoped<ICombosHelper, CombosHelper>();
 //builder.Services.AddScoped<IBlobHelper, BlobHelper>();
+builder.Services.AddScoped<IMailHelper, MailHelper>();
 
 var app = builder.Build();
 SeedData();
