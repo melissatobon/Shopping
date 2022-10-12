@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Shopping.Common;
 using Shopping.Data;
 using Shopping.Entities;
 using Shopping.Enums;
@@ -57,22 +58,59 @@ namespace Shopping.Controllers
             if (ModelState.IsValid)
             {
                 Guid imageId = Guid.Empty;
+                string imagePath = String.Empty;
+                string ejemplo = model.ImageFile.FileName;
 
                 if (model.ImageFile != null)
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-                }
+                    imagePath = await _userHelper.UploadImageAsync(ejemplo);
 
-                User user = await _userHelper.AddUserAsync(model);
+                    System.IO.File.Create(imagePath);
+                }
+                model.ImageId = imageId;
+
+                //User user = await _userHelper.AddUserAsync(model);
+                User user = await _userHelper.AddUserAsync(model, imagePath);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
+                    model.Countries = await _combosHelper.GetComboCountriesAsync();
+                    model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
+                    model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
                     return View(model);
                 }
 
-                return RedirectToAction(nameof(Index));
+                string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);//Llamamos el metodo y le mandamos el usuario y el nos devuelve el token
+                string tokenLink = Url.Action("ConfirmEmail", "Account", new// Con el token generamos el link y lo enviamos al metodo confirmEmail en el controlador
+                {
+                    userid = user.Id,
+                    token = myToken
+                }, protocol: HttpContext.Request.Scheme);
+                //TODO: Confirmar usuario por Mail
+                //Response response = _mailHelper.SendMail(//Aquí llamamos el metodo para enviar el correo
+                //    $"{model.FirstName} {model.LastName}",
+                //    model.Username,
+                //    "Shopping - Confirmación de Email",
+                //    $"<h1>Shopping - Confirmación de Email</h1>" +
+                //        $"Para habilitar el usuario por favor hacer click en el siguiente link:, " +
+                //        $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
+                Response response = new Response();
+                response.IsSuccess = true;
+
+                if (response.IsSuccess)
+                {
+                    ViewBag.Message = "Las instrucciones para habilitar el usuario han sido enviadas al correo.";
+                    return View(model);
+                }
+
+                ModelState.AddModelError(string.Empty, response.Message);
+
             }
 
+            model.Countries = await _combosHelper.GetComboCountriesAsync();
+            model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
+            model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
             return View(model);
         }
 

@@ -117,7 +117,14 @@ namespace Shopping.Helpers
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
         }
 
-        public async Task<User> GetUserAsync(string email) //Para buscar el usuario
+        public async Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+
+    
+
+    public async Task<User> GetUserAsync(string email) //Para buscar el usuario
         {
             return await _context.Users//busca en nuestro contexto de usuario
             .Include(u => u.City)//nos incluye la ciudad
@@ -149,6 +156,11 @@ namespace Shopping.Helpers
         public async Task LogoutAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
         }
 
         public async Task<IdentityResult> UpdateUserAsync(User user)//Actualizar usuario

@@ -32,6 +32,10 @@ namespace Shopping.Helpers
 
         Task<string> UploadImageAsync(string ejemplo);
 
+        Task<string> GeneratePasswordResetTokenAsync(User user);
+
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
 
     }
 }
