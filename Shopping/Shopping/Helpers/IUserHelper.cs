@@ -10,7 +10,7 @@ namespace Shopping.Helpers
 
         Task<IdentityResult> AddUserAsync(User user, string password);
         Task<User> AddUserAsync(AddUserViewModel model);
-
+        Task<User> AddUserAsync(AddUserViewModel model, string imagePath);
         Task CheckRoleAsync(string roleName);
 
         Task AddUserToRoleAsync(User user, string roleName);
@@ -30,7 +30,7 @@ namespace Shopping.Helpers
 
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
-
+        Task<string> UploadImageAsync(string ejemplo);
 
 
     }

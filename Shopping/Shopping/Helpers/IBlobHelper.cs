@@ -1,4 +1,6 @@
-﻿namespace Shopping.Helpers
+﻿using Shopping.Models;
+
+namespace Shopping.Helpers
 {
 	public interface IBlobHelper
 	{
@@ -9,6 +11,6 @@
         Task<Guid> UploadBlobAsync(string image, string containerName);
 
         Task DeleteBlobAsync(Guid id, string containerName);
-
+        
     }
 }

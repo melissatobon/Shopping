@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Shopping.Models;
 
 namespace Shopping.Helpers
 {
@@ -42,6 +43,7 @@ namespace Shopping.Helpers
 
         }
 
+        
         private async Task<Guid> UploadBlobAsync(Stream stream, string containerName)
         {
             Guid name = Guid.NewGuid();//Se sube la imagen como un GUID- Código único
@@ -50,5 +52,7 @@ namespace Shopping.Helpers
             await blockBlob.UploadFromStreamAsync(stream);//Subimos la foto en el blob creado
             return name;
         }
+
+       
     }
 }

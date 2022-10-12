@@ -34,11 +34,15 @@ namespace Shopping.Entities
         [Display(Name = "Foto")]
         public Guid ImageId { get; set; } //GUID- Codigo numero alfanumerico
 
-        
+
+        //[Display(Name = "Foto")]
+        //public string ImageFullPath => ImageId == Guid.Empty
+        //    ? $"https://localhost:7288/images/noimage.png"
+        //    : $"https://shoppingzulu.blob.core.windows.net/users/{ImageId}";
         [Display(Name = "Foto")]
-        public string ImageFullPath => ImageId == Guid.Empty
+        public string ImageFullPath => ImageSource == String.Empty
             ? $"https://localhost:7288/images/noimage.png"
-            : $"https://shoppingzulu.blob.core.windows.net/users/{ImageId}";
+            : ImageSource;
 
         [Display(Name = "Tipo de usuario")]
         public UserType UserType { get; set; }
@@ -49,6 +53,7 @@ namespace Shopping.Entities
 
         [Display(Name = "Usuario")]
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+        public string ImageSource { get; set; }
 
     }
 }

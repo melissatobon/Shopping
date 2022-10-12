@@ -54,6 +54,35 @@ namespace Shopping.Helpers
 
         }
 
+        public async Task<User> AddUserAsync(AddUserViewModel model, string imagePath)
+        {
+            User user = new User
+            {
+                Address = model.Address,
+                Document = model.Document,
+                Email = model.Username,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                ImageId = model.ImageId,
+                ImageSource= imagePath,
+                PhoneNumber = model.PhoneNumber,
+                City = await _context.Cities.FindAsync(model.CityId),
+                UserName = model.Username,
+                UserType = model.UserType
+            };
+
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            if (result != IdentityResult.Success)
+            {
+                return null;
+            }
+
+            User newUser = await GetUserAsync(model.Username);
+            await AddUserToRoleAsync(newUser, user.UserType.ToString());
+            return newUser;
+
+        }
+
         public async Task AddUserToRoleAsync(User user, string roleName)//Para asignar un rol
         {
             await _userManager.AddToRoleAsync(user, roleName);
@@ -125,6 +154,12 @@ namespace Shopping.Helpers
         public async Task<IdentityResult> UpdateUserAsync(User user)//Actualizar usuario
         {
             return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<string> UploadImageAsync(string ejemplo)
+        {
+            string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
+            return fiu;
         }
     }
 }

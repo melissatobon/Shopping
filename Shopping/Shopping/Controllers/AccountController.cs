@@ -20,8 +20,7 @@ namespace Shopping.Controllers
 
         //private readonly IBlobHelper _blobHelper;
 
-        public AccountController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IMailHelper mailHelper
-           /* IBlobHelper blobHelper*/)
+        public AccountController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IMailHelper mailHelper/*, IBlobHelper blobHelper*/)
         {
             _userHelper = userHelper;
             _context = context;
@@ -101,13 +100,22 @@ namespace Shopping.Controllers
             if (ModelState.IsValid)
             {
                 Guid imageId = Guid.Empty;
+                string imagePath = String.Empty;
+                string ejemplo = model.ImageFile.FileName;
 
                 if (model.ImageFile != null)
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+
+                    imagePath = await _userHelper.UploadImageAsync(ejemplo);
+
+                    //Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(model.ImageFile.FileName));
+                    System.IO.File.Create(imagePath);
                 }
                 model.ImageId = imageId;
-                User user = await _userHelper.AddUserAsync(model);
+                //User user = await _userHelper.AddUserAsync(model);
+
+                User user = await _userHelper.AddUserAsync(model, imagePath);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
@@ -124,13 +132,16 @@ namespace Shopping.Controllers
                     token = myToken
                 }, protocol: HttpContext.Request.Scheme);
 
-                Response response = _mailHelper.SendMail(//Aquí llamamos el metodo para enviar el correo
-                    $"{model.FirstName} {model.LastName}",
-                    model.Username,
-                    "Shopping - Confirmación de Email",
-                    $"<h1>Shopping - Confirmación de Email</h1>" +
-                        $"Para habilitar el usuario por favor hacer click en el siguiente link:, " +
-                        $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
+                //Response response = _mailHelper.SendMail(//Aquí llamamos el metodo para enviar el correo
+                //    $"{model.FirstName} {model.LastName}",
+                //    model.Username,
+                //    "Shopping - Confirmación de Email",
+                //    $"<h1>Shopping - Confirmación de Email</h1>" +
+                //        $"Para habilitar el usuario por favor hacer click en el siguiente link:, " +
+                //        $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
+                Response response = new Response();
+                response.IsSuccess = true;
+
                 if (response.IsSuccess)
                 {
                     ViewBag.Message = "Las instrucciones para habilitar el usuario han sido enviadas al correo.";
