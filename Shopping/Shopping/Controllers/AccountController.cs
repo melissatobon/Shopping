@@ -108,8 +108,7 @@ namespace Shopping.Controllers
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
 
                     imagePath = await _userHelper.UploadImageAsync(ejemplo);
-
-                    //Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(model.ImageFile.FileName));
+                   
                     System.IO.File.Create(imagePath);
                 }
                 model.ImageId = imageId;
@@ -216,10 +215,15 @@ namespace Shopping.Controllers
             if (ModelState.IsValid)
             {
                 Guid imageId = model.ImageId;
-
+                string imagePath = String.Empty;
+                string ejemplo = model.ImageFile.FileName;
                 if (model.ImageFile != null)
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
+                    
+                    imagePath = await _userHelper.UploadImageAsync(ejemplo);
+
+                    System.IO.File.Create(imagePath);
                 }
 
                 User user = await _userHelper.GetUserAsync(User.Identity.Name);
