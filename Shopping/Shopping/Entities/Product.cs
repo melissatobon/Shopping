@@ -21,7 +21,7 @@ namespace Shopping.Entities
         public string Description { get; set; }
 
         [Column(TypeName = "decimal(18,2)")]
-        [DisplayFormat(DataFormatString = "{0:C2}")]
+        [DisplayFormat(DataFormatString = "{0:C2}", ApplyFormatInEditMode = true)]
         [Display(Name = "Precio")]
         [Required(ErrorMessage = "El campo {0} es obligatorio.")]
         public decimal Price { get; set; }
@@ -45,7 +45,7 @@ namespace Shopping.Entities
         [Display(Name = "Foto")]
 
         public string ImageFullPath => ProductImages == null || ProductImages.Count == 0
-        ? $"https://localhost:7057/images/noimage.png"
+        ? $"https://localhost:7288/images/noimage.png"
         : ProductImages.FirstOrDefault().ImageFullPath;
 
 
