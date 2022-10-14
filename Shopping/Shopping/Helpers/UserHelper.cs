@@ -173,5 +173,13 @@ namespace Shopping.Helpers
             string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
             return fiu;
         }
+
+        public async Task<string> UploadImageProductAsync(string ejemplo)
+        {
+            string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\ProductImages\\", Path.GetFileName(ejemplo));
+            return fiu;
+        }
+
+
     }
 }
