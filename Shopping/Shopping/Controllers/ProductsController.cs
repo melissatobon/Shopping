@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Shopping.Data;
 using Shopping.Entities;
 using Shopping.Helpers;
+using Shopping.Migrations;
 using Shopping.Models;
 using System.Data;
+using Category = Shopping.Entities.Category;
+using Product = Shopping.Entities.Product;
 
 namespace Shopping.Controllers
 {
@@ -229,7 +232,7 @@ namespace Shopping.Controllers
                 Guid imageId = Guid.Empty;
                 string imagePath = String.Empty;
                 string ejemplo = model.ImageFile.FileName;
-                imagePath = await _userHelper.UploadImageAsync(ejemplo);
+                imagePath = await _userHelper.UploadImageProductAsync(ejemplo);
                 System.IO.File.Create(imagePath);
 
                 Product product = await _context.Products.FindAsync(model.ProductId);
@@ -275,6 +278,141 @@ namespace Shopping.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Details), new { Id = productImage.Product.Id });
         }
+
+        public async Task<IActionResult> AddCategory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(p=>p.ProductCategories)
+                .ThenInclude(pc=>pc.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+            List<Category> categories = product.ProductCategories.Select(pc => new Category
+            {
+                Id = pc.Category.Id,
+                Name = pc.Category.Name,
+            }).ToList();
+
+            AddCategoryProductViewModel model = new()
+            {
+                ProductId = product.Id,
+                Categories = await _combosHelper.GetComboCategoriesAsync(categories),
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddCategory(AddCategoryProductViewModel model)
+        {
+            Product product = await _context.Products
+                .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
+                .FirstOrDefaultAsync(p => p.Id == model.ProductId);
+
+            if (ModelState.IsValid)
+            {
+                
+                ProductCategory productCategory = new()
+                {
+                    Category = await _context.Categories.FindAsync(model.CategoryId),
+                    Product = product,
+                };
+
+                try
+                {
+                    _context.Add(productCategory);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = product.Id });
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            
+
+            List<Category> categories = product.ProductCategories.Select(pc => new Category
+            {
+                Id = pc.Category.Id,
+                Name = pc.Category.Name,
+            }).ToList();
+
+            model.Categories=await _combosHelper.GetComboCategoriesAsync(categories);
+            return View(model);
+        }
+
+        public async Task<IActionResult> DeleteCategory(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductCategory productCategory = await _context.ProductCategories
+                .Include(pc => pc.Product)
+                .FirstOrDefaultAsync(pc => pc.Id == id);
+            if (productCategory == null)
+            {
+                return NotFound();
+            }
+
+            _context.ProductCategories.Remove(productCategory);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { Id = productCategory.Product.Id });
+        }
+
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(p => p.ProductCategories)
+                .Include(p => p.ProductImages)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(Product model)
+        {
+            Product product = await _context.Products
+                .Include(p => p.ProductImages)
+                .Include(p => p.ProductCategories)
+                .FirstOrDefaultAsync(p => p.Id == model.Id);
+
+            
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+
+            foreach (ProductImage productImage in product.ProductImages)
+            {
+                System.IO.File.Delete(productImage.ImageFullPath);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
 
     }
 }
