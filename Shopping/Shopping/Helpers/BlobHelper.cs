@@ -16,9 +16,16 @@ namespace Shopping.Helpers
         }
         public async Task DeleteBlobAsync(Guid id, string containerName)
 		{
-            CloudBlobContainer container = _blobClient.GetContainerReference(containerName);//Referenciamos el contenedor
-            CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{id}");//Referenciamos el blob
-            await blockBlob.DeleteAsync();//Eliminamos el blob
+            try
+            {
+                CloudBlobContainer container = _blobClient.GetContainerReference(containerName);//Referenciamos el contenedor
+                CloudBlockBlob blockBlob = container.GetBlockBlobReference($"{id}");//Referenciamos el blob
+                await blockBlob.DeleteAsync();//Eliminamos el blob
+            }
+            catch 
+            {
+
+            }
 
         }
 

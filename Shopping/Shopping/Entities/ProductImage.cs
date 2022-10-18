@@ -15,12 +15,12 @@ namespace Shopping.Entities
 
         //TODO: Pending to change to the correct path
         [Display(Name = "Foto")]
-        public string ImageFullPath => ImageId == Guid.Empty
-        ? $"https://localhost:7057/images/noimage.png"
-        : $"https://shopping4.blob.core.windows.net/products/{ImageId}";
+        public string ImageFullPath => ImageSource == String.Empty
+            ? $"https://localhost:7288/images/noimage.png"
+            : ImageSource;
 
 
-        //public string ImageSource { get; set; }
+        public string ImageSource { get; set; }
 
     }
 }

@@ -52,15 +52,15 @@ namespace Shopping.Controllers
             if (ModelState.IsValid)
             {
                 Guid imageId = Guid.Empty;
-                //string imagePath = String.Empty;
-                //string ejemplo = model.ImageFile.FileName;
+                string imagePath = String.Empty;
+                string ejemplo = model.ImageFile.FileName;
                 if (model.ImageFile != null)
                 {
                     //TODO: Modificar la carga de imagenes
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
-                    //imagePath = await _userHelper.UploadImageAsync(ejemplo);
+                    imagePath = await _userHelper.UploadImageProductAsync(ejemplo);
 
-                    //System.IO.File.Create(imagePath);
+                    System.IO.File.Create(imagePath);
                 }
                 
                 Product product = new()
@@ -80,11 +80,11 @@ namespace Shopping.Controllers
                     }
                 };
 
-                if (imageId != Guid.Empty)
+                if (imagePath != String.Empty)
                 {
                     product.ProductImages = new List<ProductImage>()
                     {
-                        new ProductImage { ImageId = imageId }
+                        new ProductImage { ImageSource = imagePath }
                     };
                 }
 
@@ -199,7 +199,82 @@ namespace Shopping.Controllers
             return View(product);
         }
 
+        public async Task<IActionResult> AddImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            Product product = await _context.Products.FindAsync(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            AddProductImageViewModel model = new()
+            {
+                ProductId = product.Id,
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddImage(AddProductImageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                Guid imageId = Guid.Empty;
+                string imagePath = String.Empty;
+                string ejemplo = model.ImageFile.FileName;
+                imagePath = await _userHelper.UploadImageAsync(ejemplo);
+                System.IO.File.Create(imagePath);
+
+                Product product = await _context.Products.FindAsync(model.ProductId);
+                ProductImage productImage = new()
+                {
+                    Product = product,
+                    ImageSource = imagePath,
+                };
+
+                try
+                {
+                    _context.Add(productImage);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { Id = product.Id });
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> DeleteImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductImage productImage = await _context.ProductImages
+                .Include(pi => pi.Product)
+                .FirstOrDefaultAsync(pi => pi.Id == id);
+            if (productImage == null)
+            {
+                return NotFound();
+            }
+
+            System.IO.File.Delete(productImage.ImageFullPath);
+            //await _blobHelper.DeleteBlobAsync(productImage.ImageId, "products");
+            _context.ProductImages.Remove(productImage);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { Id = productImage.Product.Id });
+        }
 
     }
 }

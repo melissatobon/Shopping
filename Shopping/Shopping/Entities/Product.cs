@@ -50,7 +50,7 @@ namespace Shopping.Entities
 
 
 
-        //public string ImageSource { get; set; }
+        
 
     }
 }
