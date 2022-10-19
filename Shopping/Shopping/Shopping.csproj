@@ -20,7 +20,37 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\products\" />
+    <None Include="wwwroot\ProductImages\adidas.jfif" />
+    <None Include="wwwroot\ProductImages\adidasb.jfif" />
+    <None Include="wwwroot\ProductImages\airpods.jfif" />
+    <None Include="wwwroot\ProductImages\airpodsb.jfif" />
+    <None Include="wwwroot\ProductImages\busoadidas.jfif" />
+    <None Include="wwwroot\ProductImages\busoadidasb.jfif" />
+    <None Include="wwwroot\ProductImages\camamascota.jfif" />
+    <None Include="wwwroot\ProductImages\camamascotab.jfif" />
+    <None Include="wwwroot\ProductImages\camisacuadros.jfif" />
+    <None Include="wwwroot\ProductImages\camisacuadrosb.jfif" />
+    <None Include="wwwroot\ProductImages\cascobici.jfif" />
+    <None Include="wwwroot\ProductImages\cascobicib.jfif" />
+    <None Include="wwwroot\ProductImages\descarga %281%29.jfif" />
+    <None Include="wwwroot\ProductImages\descarga.jfif" />
+    <None Include="wwwroot\ProductImages\ipad.jfif" />
+    <None Include="wwwroot\ProductImages\ipadb.jfif" />
+    <None Include="wwwroot\ProductImages\iphone13.jfif" />
+    <None Include="wwwroot\ProductImages\iphone13b.jfif" />
+    <None Include="wwwroot\ProductImages\macbook.jfif" />
+    <None Include="wwwroot\ProductImages\mouse.jfif" />
+    <None Include="wwwroot\ProductImages\newbalance.jfif" />
+    <None Include="wwwroot\ProductImages\nike.jfif" />
+    <None Include="wwwroot\ProductImages\notfound.png" />
+    <None Include="wwwroot\ProductImages\sillagamer.jfif" />
+    <None Include="wwwroot\ProductImages\wheypro.jfif" />
+    <None Include="wwwroot\UserImages\angelina.jfif" />
+    <None Include="wwwroot\UserImages\bradpit.jfif" />
+    <None Include="wwwroot\UserImages\usuarioa.jfif" />
+    <None Include="wwwroot\UserImages\usuariob.jfif" />
+    <None Include="wwwroot\UserImages\usuariod.png" />
+    <None Include="wwwroot\UserImages\usuarioe.png" />
   </ItemGroup>
 
 </Project>

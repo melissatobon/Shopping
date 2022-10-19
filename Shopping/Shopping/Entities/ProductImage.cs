@@ -21,6 +21,7 @@ namespace Shopping.Entities
 
 
         public string ImageSource { get; set; }
+        public string ImageName { get; set; }
 
     }
 }

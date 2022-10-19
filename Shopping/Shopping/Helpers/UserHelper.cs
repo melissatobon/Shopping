@@ -40,7 +40,8 @@ namespace Shopping.Helpers
                 PhoneNumber = model.PhoneNumber,
                 City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
-                UserType = model.UserType
+                UserType = model.UserType,
+                ImageName= model.ImageFile.FileName
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -69,7 +70,8 @@ namespace Shopping.Helpers
                 PhoneNumber = model.PhoneNumber,
                 City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
-                UserType = model.UserType
+                UserType = model.UserType,
+                ImageName= model.ImageFile.FileName
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -188,14 +190,17 @@ namespace Shopping.Helpers
 
         public async Task<string> UploadImageAsync(string ejemplo)
         {
-            string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
-            return fiu;
+            
+            //string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
+            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{ejemplo}");
+
+            return path;
         }
 
         public async Task<string> UploadImageProductAsync(string ejemplo)
         {
-            string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\ProductImages\\", Path.GetFileName(ejemplo));
-            return fiu;
+            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{ejemplo}");
+            return path;
         }
 
 

@@ -22,11 +22,11 @@ namespace Shopping.Data
             await CheckCategoriesAsync();
             await CheckCountriesAsync();
             await CheckRolesAsync();
-            await CheckUserAsync("1010", "Melissa", "Restrepo", "meli@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "fotomeli.png", UserType.Admin);
+            await CheckUserAsync("1010", "Melissa", "Restrepo", "meli@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "usuariog.png", UserType.Admin);
             await CheckUserAsync("2020", "Emily", "Sanchez", "emily@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "usuarioe.png", UserType.User);
             await CheckUserAsync("3030", "Juan", "Zuluaga", "zulu@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "usuariob.jfif", UserType.Admin);
             await CheckUserAsync("2020", "Ledys", "Bedoya", "ledys@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "usuarioa.jfif", UserType.User);
-            await CheckUserAsync("3030", "Brad", "Pitt", "brad@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "bradoit.jfif", UserType.User);
+            await CheckUserAsync("3030", "Brad", "Pitt", "brad@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "bradpit.jfif", UserType.User);
             await CheckUserAsync("4040", "Angelina", "Jolie", "angelina@yopmail.com", "322 311 4620", "Calle Luna Calle Sol", "angelina.jfif", UserType.User);
 
             await CheckProductsAsync();
@@ -80,7 +80,7 @@ namespace Shopping.Data
             {
                 //Guid imageId = await _blobHelper.UploadBlobAsync($"{Environment.CurrentDirectory}\\wwwroot\\images\\users\\{image}", "users");
                 
-                string imagePath = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(image));
+                string imagePath = ($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{image}");
                 user = new User
                 {
                     FirstName = firstName,
@@ -92,7 +92,8 @@ namespace Shopping.Data
                     Document = document,
                     City = _context.Cities.FirstOrDefault(),
                     UserType = userType,
-                    ImageSource = imagePath
+                    ImageSource = imagePath,
+                    ImageName= image
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
@@ -274,7 +275,8 @@ namespace Shopping.Data
                 Price = price,
                 Stock = stock,
                 ProductCategories = new List<ProductCategory>(),
-                ProductImages = new List<ProductImage>()
+                ProductImages = new List<ProductImage>(),
+
             };
 
             foreach (string? category in categories)
@@ -286,9 +288,10 @@ namespace Shopping.Data
             foreach (string? image in images)
             {
                 //Guid imageId = await _blobHelper.UploadBlobAsync($"{Environment.CurrentDirectory}\\wwwroot\\images\\products\\{image}", "products");
-                string imagePath = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\ProductImages\\", Path.GetFileName(image));
+                string imagePath = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{image}");
 
-                product.ProductImages.Add(new ProductImage { ImageSource = imagePath });
+                product.ProductImages.Add(new ProductImage { ImageSource = imagePath, ImageName=image });
+                
             }
 
             _context.Products.Add(product);

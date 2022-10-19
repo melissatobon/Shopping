@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 using Shopping.Data;
 using Shopping.Entities;
 using Shopping.Helpers;
-using Shopping.Migrations;
 using Shopping.Models;
 using System.Data;
 using Category = Shopping.Entities.Category;
@@ -65,14 +64,14 @@ namespace Shopping.Controllers
 
                     System.IO.File.Create(imagePath);
                 }
-                
+
                 Product product = new()
                 {
                     Description = model.Description,
                     Name = model.Name,
                     Price = model.Price,
                     Stock = model.Stock,
-                    
+
                 };
 
                 product.ProductCategories = new List<ProductCategory>()
@@ -87,7 +86,7 @@ namespace Shopping.Controllers
                 {
                     product.ProductImages = new List<ProductImage>()
                     {
-                        new ProductImage { ImageSource = imagePath }
+                        new ProductImage { ImageSource = imagePath, ImageName= model.ImageFile.FileName}
                     };
                 }
 
@@ -287,8 +286,8 @@ namespace Shopping.Controllers
             }
 
             Product product = await _context.Products
-                .Include(p=>p.ProductCategories)
-                .ThenInclude(pc=>pc.Category)
+                .Include(p => p.ProductCategories)
+                .ThenInclude(pc => pc.Category)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
             if (product == null)
@@ -321,7 +320,7 @@ namespace Shopping.Controllers
 
             if (ModelState.IsValid)
             {
-                
+
                 ProductCategory productCategory = new()
                 {
                     Category = await _context.Categories.FindAsync(model.CategoryId),
@@ -340,7 +339,7 @@ namespace Shopping.Controllers
                 }
             }
 
-            
+
 
             List<Category> categories = product.ProductCategories.Select(pc => new Category
             {
@@ -348,7 +347,7 @@ namespace Shopping.Controllers
                 Name = pc.Category.Name,
             }).ToList();
 
-            model.Categories=await _combosHelper.GetComboCategoriesAsync(categories);
+            model.Categories = await _combosHelper.GetComboCategoriesAsync(categories);
             return View(model);
         }
 
@@ -400,7 +399,7 @@ namespace Shopping.Controllers
                 .Include(p => p.ProductCategories)
                 .FirstOrDefaultAsync(p => p.Id == model.Id);
 
-            
+
 
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();

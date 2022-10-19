@@ -112,6 +112,7 @@ namespace Shopping.Controllers
                     System.IO.File.Create(imagePath);
                 }
                 model.ImageId = imageId;
+                
                 //User user = await _userHelper.AddUserAsync(model);
 
                 User user = await _userHelper.AddUserAsync(model, imagePath);
