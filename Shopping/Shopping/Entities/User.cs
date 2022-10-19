@@ -55,6 +55,6 @@ namespace Shopping.Entities
         public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
         public string ImageSource { get; set; }
         public string ImageName { get; set; }
-
+        public ICollection<Sale> Sales { get; set; }
     }
 }
