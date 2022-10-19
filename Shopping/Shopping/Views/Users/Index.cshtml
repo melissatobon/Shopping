@@ -92,7 +92,9 @@
                                     @Html.DisplayFor(modelItem => item.EmailConfirmed)
                                 </td>
                                 <td>
-                                    <img src="~/UserImages/@item.ImageName" style="width:100px; height:100px; border-radius:50px" />
+                                    <div class="zoom">
+                                        <img src="~/UserImages/@item.ImageName" style="width:100px; height:100px; border-radius:50px" />
+                                    </div>
                                 </td>
                             </tr>
                         }
