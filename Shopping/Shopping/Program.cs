@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Shopping.Data;
 using Shopping.Entities;
 using Shopping.Helpers;
+using Vereyon.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
@@ -38,7 +39,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 
 
-
+builder.Services.AddFlashMessage();
 builder.Services.AddTransient<SeedDb>(); //Se usa una sóla vez
 //builder.Services.AddScoped<SeedDb>(); //La inyecta cada vez que la necesita, lo destruye cuando lo deja de usar, es la mayoría
 //builder.Services.AddSingleton<SeedDb>(); //Lo inyecta una vez y no lo destruye, queda en memoria
