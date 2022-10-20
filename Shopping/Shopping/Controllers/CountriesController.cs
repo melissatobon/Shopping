@@ -5,6 +5,7 @@ using Shopping.Data;
 using Shopping.Entities;
 using Shopping.Models;
 using System.Data;
+using Vereyon.Web;
 
 namespace Shopping.Controllers
 {
@@ -12,10 +13,12 @@ namespace Shopping.Controllers
     public class CountriesController : Controller
     {
         private readonly DataContext _context;
+        private readonly IFlashMessage _flashMessage;
 
-        public CountriesController(DataContext context)
+        public CountriesController(DataContext context, IFlashMessage flashMessage)
         {
             _context = context;
+            _flashMessage = flashMessage;
         }
 
 
@@ -71,16 +74,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        _flashMessage.Danger(string.Empty, "Ya existe un país con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(country);
@@ -128,16 +131,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un país con el mismo nombre.");
+                        _flashMessage.Danger(string.Empty, "Ya existe un país con el mismo nombre.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(country);
@@ -170,6 +173,7 @@ namespace Shopping.Controllers
             Country country = await _context.Countries.FindAsync(id);
             _context.Countries.Remove(country);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro borrado.");
             return RedirectToAction(nameof(Index));
         }
 
@@ -216,16 +220,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un departamento/estado con el mismo nombre en este país.");
+                        _flashMessage.Danger(string.Empty, "Ya existe un departamento/estado con el mismo nombre en este país.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(model);
@@ -281,16 +285,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe un departamento/estado con el mismo nombre en este país.");
+                        _flashMessage.Danger(string.Empty, "Ya existe un departamento/estado con el mismo nombre en este país.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(model);
@@ -357,16 +361,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una ciudad con el mismo nombre en este departamento/estado.");
+                        _flashMessage.Danger(string.Empty, "Ya existe una ciudad con el mismo nombre en este departamento/estado.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(model);
@@ -423,16 +427,16 @@ namespace Shopping.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "Ya existe una ciudad con el mismo nombre en este departamento/estado.");
+                        _flashMessage.Danger(string.Empty, "Ya existe una ciudad con el mismo nombre en este departamento/estado.");
                     }
                     else
                     {
-                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                        _flashMessage.Danger(string.Empty, dbUpdateException.InnerException.Message);
                     }
                 }
                 catch (Exception exception)
                 {
-                    ModelState.AddModelError(string.Empty, exception.Message);
+                    _flashMessage.Danger(string.Empty, exception.Message);
                 }
             }
             return View(model);
@@ -484,6 +488,7 @@ namespace Shopping.Controllers
                 .FirstOrDefaultAsync(s=>s.Id==id);
             _context.States.Remove(state);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro borrado.");
             return RedirectToAction(nameof(Details), new { Id=state.Country.Id});
         }
 
@@ -515,6 +520,7 @@ namespace Shopping.Controllers
                 .FirstOrDefaultAsync(s => s.Id == id);
             _context.Cities.Remove(city);
             await _context.SaveChangesAsync();
+            _flashMessage.Info("Registro borrado.");
             return RedirectToAction(nameof(DetailsState), new { Id = city.State.Id });
         }
 

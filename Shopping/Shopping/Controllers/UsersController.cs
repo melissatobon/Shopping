@@ -8,6 +8,7 @@ using Shopping.Enums;
 using Shopping.Helpers;
 using Shopping.Models;
 using System.Data;
+using Vereyon.Web;
 
 namespace Shopping.Controllers
 {
@@ -17,14 +18,17 @@ namespace Shopping.Controllers
         private readonly IUserHelper _userHelper;
         private readonly DataContext _context;
         private readonly ICombosHelper _combosHelper;
+        private readonly IFlashMessage _flashMessage;
+
         //private readonly IBlobHelper _blobHelper;
 
-        public UsersController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper
+        public UsersController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IFlashMessage flashMessage
            /* IBlobHelper blobHelper*/)
         {
             _userHelper = userHelper;
             _context = context;
             _combosHelper = combosHelper;
+            _flashMessage = flashMessage;
             //_blobHelper = blobHelper;
         }
 
@@ -74,7 +78,7 @@ namespace Shopping.Controllers
                 User user = await _userHelper.AddUserAsync(model, imagePath);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Este correo ya está siendo usado.");
+                    _flashMessage.Danger(string.Empty, "Este correo ya está siendo usado.");
                     model.Countries = await _combosHelper.GetComboCountriesAsync();
                     model.States = await _combosHelper.GetComboStatesAsync(model.CountryId);
                     model.Cities = await _combosHelper.GetComboCitiesAsync(model.StateId);
@@ -100,11 +104,13 @@ namespace Shopping.Controllers
 
                 if (response.IsSuccess)
                 {
-                    ViewBag.Message = "Las instrucciones para habilitar el usuario han sido enviadas al correo.";
+                    _flashMessage.Info("Administrador registrado. Para poder ingresar al sistema, siga las instrucciones que han sido enviadas a su correo.");
+                    
+
                     return View(model);
                 }
 
-                ModelState.AddModelError(string.Empty, response.Message);
+                _flashMessage.Danger(string.Empty, response.Message);
 
             }
 
