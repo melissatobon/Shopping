@@ -1299,7 +1299,7 @@
   color: rgba(var(--bs-success-rgb), var(--bs-text-opacity)) !important;
 }
 
-.text-info {
+.text-primay {
   --bs-text-opacity: 1;
   color: rgba(var(--bs-info-rgb), var(--bs-text-opacity)) !important;
 }
