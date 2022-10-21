@@ -104,13 +104,13 @@ namespace Shopping.Controllers
             {
                 Guid imageId = Guid.Empty;
                 string imagePath = String.Empty;
-                string ejemplo = model.ImageFile.FileName;
+               
 
                 if (model.ImageFile != null)
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-
-                    imagePath = await _userHelper.UploadImageAsync(ejemplo);
+                    string nombre = model.ImageFile.FileName;
+                    imagePath = await _userHelper.UploadImageAsync(nombre);
                    
                     System.IO.File.Create(imagePath);
                 }

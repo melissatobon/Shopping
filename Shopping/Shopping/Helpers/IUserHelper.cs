@@ -30,12 +30,12 @@ namespace Shopping.Helpers
 
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
-        Task<string> UploadImageAsync(string ejemplo);
+        Task<string> UploadImageAsync(string nombre);
 
         Task<string> GeneratePasswordResetTokenAsync(User user);
 
         Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
-        Task<string> UploadImageProductAsync(string ejemplo);
+        Task<string> UploadImageProductAsync(string nombre);
         //Task<string> DeleteImageProductAsync(string ejemplo);
     }
 }

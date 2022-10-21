@@ -188,18 +188,18 @@ namespace Shopping.Helpers
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<string> UploadImageAsync(string ejemplo)
+        public async Task<string> UploadImageAsync(string nombre)
         {
             
             //string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
-            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{ejemplo}");
+            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{nombre}");
 
             return path;
         }
 
-        public async Task<string> UploadImageProductAsync(string ejemplo)
+        public async Task<string> UploadImageProductAsync(string nombre)
         {
-            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{ejemplo}");
+            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{nombre}");
             return path;
         }
 
