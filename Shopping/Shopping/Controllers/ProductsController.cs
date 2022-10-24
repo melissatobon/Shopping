@@ -67,7 +67,7 @@ namespace Shopping.Controllers
                     string nombre = model.ImageFile.FileName;
                     //TODO: Modificar la carga de imagenes
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
-                    imagePath = await _userHelper.UploadImageProductAsync(nombre);
+                    //imagePath = await _userHelper.UploadImageProductAsync(nombre);
 
                     System.IO.File.Create(imagePath);
                 }
@@ -251,7 +251,7 @@ namespace Shopping.Controllers
                 Guid imageId = Guid.Empty;
                 string imagePath = String.Empty;
                 string nombre = model.ImageFile.FileName;
-                imagePath = await _userHelper.UploadImageProductAsync(nombre);
+                //imagePath = await _userHelper.UploadImageProductAsync(nombre);
                 System.IO.File.Create(imagePath);
 
                 Product product = await _context.Products.FindAsync(model.ProductId);

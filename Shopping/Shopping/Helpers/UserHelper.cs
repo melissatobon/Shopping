@@ -41,7 +41,7 @@ namespace Shopping.Helpers
                 City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
                 UserType = model.UserType,
-                ImageName= model.ImageFile.FileName
+                ImageName = model.ImageFile.FileName
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -66,12 +66,12 @@ namespace Shopping.Helpers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 ImageId = model.ImageId,
-                ImageSource= imagePath,
+                ImageSource = imagePath,
                 PhoneNumber = model.PhoneNumber,
                 City = await _context.Cities.FindAsync(model.CityId),
                 UserName = model.Username,
                 UserType = model.UserType,
-                ImageName= model.ImageFile.FileName
+                ImageName = model.ImageFile.FileName
             };
 
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
@@ -142,14 +142,14 @@ namespace Shopping.Helpers
             return await _userManager.GeneratePasswordResetTokenAsync(user);
         }
 
-    
 
-    public async Task<User> GetUserAsync(string email) //Para buscar el usuario
+
+        public async Task<User> GetUserAsync(string email) //Para buscar el usuario
         {
             return await _context.Users//busca en nuestro contexto de usuario
             .Include(u => u.City)//nos incluye la ciudad
-            .ThenInclude(c=>c.State)
-            .ThenInclude(s=>s.Country)
+            .ThenInclude(c => c.State)
+            .ThenInclude(s => s.Country)
             .FirstOrDefaultAsync(u => u.Email == email);
 
         }
@@ -188,18 +188,19 @@ namespace Shopping.Helpers
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<string> UploadImageAsync(string nombre)
+        public async Task<string> UploadImageAsync(string nombre, string directory, IFormFile image)
         {
-            
-            //string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\UserImages\\", Path.GetFileName(ejemplo));
-            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{nombre}");
+            string path = Path.Combine($"{Environment.CurrentDirectory}\\{directory}\\{nombre}");
+            if (File.Exists(path))
+            {
+                File.Delete(path);
+            }
 
-            return path;
-        }
 
-        public async Task<string> UploadImageProductAsync(string nombre)
-        {
-            string path = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{nombre}");
+            using (var stream = new FileStream(path, FileMode.Create))
+            {
+                image.CopyTo(stream);
+            }
             return path;
         }
 

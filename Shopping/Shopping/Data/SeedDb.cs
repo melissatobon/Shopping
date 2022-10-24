@@ -39,25 +39,25 @@ namespace Shopping.Data
                 await AddProductAsync("Adidas Barracuda", 270000M, 12F, new List<string>() { "Calzado", "Deportes" }, new List<string>() { "adidas.jfif" });
                 await AddProductAsync("Adidas Superstar", 250000M, 12F, new List<string>() { "Calzado", "Deportes" }, new List<string>() { "adidasb.jfif" });
                 await AddProductAsync("AirPods", 1300000M, 12F, new List<string>() { "Tecnología", "Apple" }, new List<string>() { "airpos.jfif", "airposb.jfif" });
-                
-                
+
+
                 await AddProductAsync("Camisa Cuadros", 56000M, 24F, new List<string>() { "Ropa" }, new List<string>() { "camisacuadros.jfif", "camisacuadrosb.jfif" });
                 await AddProductAsync("Casco Bicicleta", 820000M, 12F, new List<string>() { "Deportes" }, new List<string>() { "cascobici.jfif", "cascobicib.jfif" });
                 await AddProductAsync("iPad", 2300000M, 6F, new List<string>() { "Tecnología", "Apple" }, new List<string>() { "ipad.jfif", "ipadb.jfif" });
                 await AddProductAsync("iPhone 13", 5200000M, 6F, new List<string>() { "Tecnología", "Apple" }, new List<string>() { "iphone13.jfif", "iphone13b.jfif" });
                 await AddProductAsync("Mac Book Pro", 12100000M, 6F, new List<string>() { "Tecnología", "Apple" }, new List<string>() { "macbook.jfif" });
-                
-                
+
+
                 await AddProductAsync("New Balance 530", 180000M, 12F, new List<string>() { "Calzado", "Deportes" }, new List<string>() { "newbalance.png" });
-                
+
                 await AddProductAsync("Nike Air", 233000M, 12F, new List<string>() { "Calzado", "Deportes" }, new List<string>() { "nike.jfif" });
-                
+
                 await AddProductAsync("Buso Adidas Mujer", 134000M, 12F, new List<string>() { "Ropa", "Deportes" }, new List<string>() { "busoadidas.jfif", "busoadidasb.jfif" });
-                
+
                 await AddProductAsync("Whey Protein", 252000M, 12F, new List<string>() { "Nutrición" }, new List<string>() { "wheypro.jfif" });
-                
+
                 await AddProductAsync("Cama Mascota", 99000M, 12F, new List<string>() { "Mascotas" }, new List<string>() { "camamascota.jfif", "camamascotab.jfif" });
-                
+
                 await AddProductAsync("Silla Gamer", 980000M, 12F, new List<string>() { "Gamer", "Tecnología" }, new List<string>() { "sillagamer.jfif" });
                 await AddProductAsync("Mouse Gamer", 132000M, 12F, new List<string>() { "Gamer", "Tecnología" }, new List<string>() { "mouse.jfif" });
                 await _context.SaveChangesAsync();
@@ -79,7 +79,7 @@ namespace Shopping.Data
             if (user == null)//si no existe me lo crea
             {
                 //Guid imageId = await _blobHelper.UploadBlobAsync($"{Environment.CurrentDirectory}\\wwwroot\\images\\users\\{image}", "users");
-                
+
                 string imagePath = ($"{Environment.CurrentDirectory}\\wwwroot\\UserImages\\{image}");
                 user = new User
                 {
@@ -93,7 +93,7 @@ namespace Shopping.Data
                     City = _context.Cities.FirstOrDefault(),
                     UserType = userType,
                     ImageSource = imagePath,
-                    ImageName= image
+                    ImageName = image
                 };
 
                 await _userHelper.AddUserAsync(user, "123456");
@@ -290,8 +290,8 @@ namespace Shopping.Data
                 //Guid imageId = await _blobHelper.UploadBlobAsync($"{Environment.CurrentDirectory}\\wwwroot\\images\\products\\{image}", "products");
                 string imagePath = Path.Combine($"{Environment.CurrentDirectory}\\wwwroot\\ProductImages\\{image}");
 
-                product.ProductImages.Add(new ProductImage { ImageSource = imagePath, ImageName=image });
-                
+                product.ProductImages.Add(new ProductImage { ImageSource = imagePath, ImageName = image });
+
             }
 
             _context.Products.Add(product);

@@ -110,9 +110,8 @@ namespace Shopping.Controllers
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
                     string nombre = model.ImageFile.FileName;
-                    imagePath = await _userHelper.UploadImageAsync(nombre);
-                   
-                    System.IO.File.Create(imagePath);
+                    string directory = "wwwroot\\UserImages";
+                    imagePath = await _userHelper.UploadImageAsync(nombre, directory, model.ImageFile);
                 }
                 model.ImageId = imageId;
                 
@@ -207,7 +206,9 @@ namespace Shopping.Controllers
                 StateId = user.City.State.Id,
                 States = await _combosHelper.GetComboStatesAsync(user.City.State.Country.Id),
                 Id = user.Id,
-                Document = user.Document
+                Document = user.Document,
+                ImageName = user.ImageName,
+
             };
 
             return View(model);
@@ -221,14 +222,13 @@ namespace Shopping.Controllers
             {
                 Guid imageId = model.ImageId;
                 string imagePath = String.Empty;
-                string ejemplo = model.ImageFile.FileName;
+                string nombre = model.ImageName;
                 if (model.ImageFile != null)
                 {
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-                    
-                    imagePath = await _userHelper.UploadImageAsync(ejemplo);
-
-                    System.IO.File.Create(imagePath);
+                    nombre = model.ImageFile.FileName;
+                    string directory = "wwwroot\\UserImages";
+                    imagePath = await _userHelper.UploadImageAsync(nombre, directory, model.ImageFile);
                 }
 
                 User user = await _userHelper.GetUserAsync(User.Identity.Name);
@@ -240,7 +240,8 @@ namespace Shopping.Controllers
                 user.ImageId = imageId;
                 user.City = await _context.Cities.FindAsync(model.CityId);
                 user.Document = model.Document;
-
+                user.ImageSource = imagePath;
+                user.ImageName = nombre;
                 await _userHelper.UpdateUserAsync(user);
                 return RedirectToAction("Index", "Home");
             }

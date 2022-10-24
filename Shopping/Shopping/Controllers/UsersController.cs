@@ -68,10 +68,10 @@ namespace Shopping.Controllers
                 if (model.ImageFile != null)
                 {
                     string nombre = model.ImageFile.FileName;
+                    string directory = "wwwroot\\UserImages";
                     //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "users");
-                    imagePath = await _userHelper.UploadImageAsync(nombre);
+                    imagePath = await _userHelper.UploadImageAsync(nombre, directory, model.ImageFile);
 
-                    System.IO.File.Create(imagePath);
                 }
                 model.ImageId = imageId;
 

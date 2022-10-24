@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Shopping.Migrations;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 namespace Shopping.Models
@@ -37,9 +38,9 @@ namespace Shopping.Models
 
         //TODO: Pending to put the correct paths
         [Display(Name = "Foto")]
-        public string ImageFullPath => ImageId == Guid.Empty
-            ? $"https://localhost:7057/images/noimage.png"
-            : $"https://shoppingzulu.blob.core.windows.net/users/{ImageId}";
+        public string ImageFullPath => ImageSource == String.Empty
+            ? $"https://localhost:7288/images/noimage.png"
+            : ImageSource;
 
         [Display(Name = "Image")]
         public IFormFile? ImageFile { get; set; }
@@ -64,5 +65,7 @@ namespace Shopping.Models
 
         public IEnumerable<SelectListItem> Cities { get; set; }
 
+        public string ImageSource { get; set; }
+        public string ImageName { get; set; }
     }
 }
