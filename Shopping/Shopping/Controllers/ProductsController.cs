@@ -7,6 +7,7 @@ using Shopping.Helpers;
 using Shopping.Models;
 using System;
 using System.Data;
+using System.IO;
 using Vereyon.Web;
 using static Shopping.Helpers.ModalHelper;
 using Category = Shopping.Entities.Category;
@@ -64,12 +65,12 @@ namespace Shopping.Controllers
                
                 if (model.ImageFile != null)
                 {
+                    
                     string nombre = model.ImageFile.FileName;
-                    //TODO: Modificar la carga de imagenes
-                    //imageId = await _blobHelper.UploadBlobAsync(model.ImageFile, "products");
-                    //imagePath = await _userHelper.UploadImageProductAsync(nombre);
+                    string directory = "wwwroot\\ProductImages";
+                    imagePath = await _userHelper.UploadImageAsync(nombre, directory, model.ImageFile);
 
-                    System.IO.File.Create(imagePath);
+                    
                 }
 
                 Product product = new()
@@ -249,16 +250,16 @@ namespace Shopping.Controllers
             if (ModelState.IsValid)
             {
                 Guid imageId = Guid.Empty;
-                string imagePath = String.Empty;
                 string nombre = model.ImageFile.FileName;
-                //imagePath = await _userHelper.UploadImageProductAsync(nombre);
-                System.IO.File.Create(imagePath);
+                string directory = "wwwroot\\ProductImages";
+                string imagePath = await _userHelper.UploadImageAsync(nombre, directory, model.ImageFile);
 
                 Product product = await _context.Products.FindAsync(model.ProductId);
                 ProductImage productImage = new()
                 {
                     Product = product,
                     ImageSource = imagePath,
+                    ImageName= nombre
                 };
 
                 try
@@ -302,7 +303,11 @@ namespace Shopping.Controllers
                 return NotFound();
             }
 
-            System.IO.File.Delete(productImage.ImageFullPath);
+            if (System.IO.File.Exists(productImage.ImageFullPath))
+            {
+                System.IO.File.Delete(productImage.ImageFullPath);
+            }
+
             //await _blobHelper.DeleteBlobAsync(productImage.ImageId, "products");
             _context.ProductImages.Remove(productImage);
             await _context.SaveChangesAsync();

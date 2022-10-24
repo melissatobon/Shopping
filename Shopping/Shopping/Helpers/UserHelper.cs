@@ -188,7 +188,7 @@ namespace Shopping.Helpers
             return await _userManager.UpdateAsync(user);
         }
 
-        public async Task<string> UploadImageAsync(string nombre, string directory, IFormFile image)
+        public Task<string> UploadImageAsync(string nombre, string directory, IFormFile image)
         {
             string path = Path.Combine($"{Environment.CurrentDirectory}\\{directory}\\{nombre}");
             if (File.Exists(path))
@@ -201,7 +201,7 @@ namespace Shopping.Helpers
             {
                 image.CopyTo(stream);
             }
-            return path;
+            return Task.FromResult(path);
         }
 
 

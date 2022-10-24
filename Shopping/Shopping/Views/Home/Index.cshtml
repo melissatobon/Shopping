@@ -56,7 +56,7 @@
             <div class="col">
                 <div class="card h-100">
                     <div class="text-center zoom">
-                        <img src="@item.ImageFullPath" style="height:150px; max-width:200px;" class="text-center" alt=@item.Name />
+                        <img src="/ProductImages/@item.ProductImages.FirstOrDefault().ImageName" style="height:150px; max-width:200px;" class="text-center" alt=@item.Name />
                     </div>
                     <div class="card-body">
                         <h5 class="card-title text-navy"> @item.Name</h5>

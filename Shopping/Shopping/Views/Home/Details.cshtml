@@ -16,7 +16,7 @@
                 @foreach (var item in @Model?.ProductImages)
                 {
                     <div class="carousel-item @(first?Html.Raw("active"):Html.Raw(""))">
-                        <img class="d-block w-100" src="@item.ImageFullPath" alt="@item.Id">
+                        <img class="d-block w-100" src="/ProductImages/@item.ImageName" alt="@item.Id">
                     </div>
                     first = false;
                 }

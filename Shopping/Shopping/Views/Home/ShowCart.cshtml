@@ -53,7 +53,7 @@
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.TemporalSales.FirstOrDefault().Product.ImageFullPath)
+                                Imagen
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.TemporalSales.FirstOrDefault().Product.Name)
@@ -81,7 +81,7 @@
                             <tr>
                                 <td>
                                     <div class="zoom">
-                                        <img src="@item.Product.ImageFullPath" style="width:100px;" />
+                                        <img src="/ProductImages/@item.Product.ProductImages.FirstOrDefault().ImageName" style="width:100px;" />
                                     </div>
                                 </td>
                                 <td>

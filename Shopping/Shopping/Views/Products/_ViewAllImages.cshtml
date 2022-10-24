@@ -8,7 +8,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductImages.FirstOrDefault().ImageFullPath)
+                @Html.DisplayNameFor(model => model.ProductImages.FirstOrDefault().ImageName)
             </th>
             <th>
                 <a onclick="showInPopup('@Url.Action("AddImage", "Products", new { Id = Model.Id }, Context.Request.Scheme)' , 'Nueva Imagen')" class="btn btn-sm btn-primary text-white"><i class="fa fa-plus-circle"></i> Imagen</a>
@@ -21,7 +21,7 @@
             <tr>
                 <td>
                     <div class="zoom">
-                        <img src="@item.ImageFullPath" style="width:100px;" />
+                        <img src="~/ProductImages/@item.ImageName" style="width:100px;" />
                     </div>
                 </td>
                 <td>
