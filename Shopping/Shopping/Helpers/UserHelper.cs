@@ -115,23 +115,6 @@ namespace Shopping.Helpers
             return await _userManager.ConfirmEmailAsync(user, token);
         }
 
-        //public Task<string> DeleteImageProductAsync(string ejemplo)
-        //{
-        //    string fiu = Path.Combine("C:\\Projects\\Shopping\\Shopping\\Shopping\\Resources\\ProductImages\\", Path.GetFileName(ejemplo));
-        //    if (File.Exists(fiu))
-        //    {
-        //        try
-        //        {
-        //            File.Delete(fiu);
-        //        }
-        //        catch (IOException ev)
-        //        {
-        //            //Console.WriteLine(ev.Message);
-        //            return;
-        //        }
-        //    }
-        //}
-
         public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
