@@ -19,16 +19,18 @@ namespace Shopping.Controllers
         private readonly DataContext _context;
         private readonly ICombosHelper _combosHelper;
         private readonly IFlashMessage _flashMessage;
+        private readonly IMailHelper _mailHelper;
 
         //private readonly IBlobHelper _blobHelper;
 
-        public UsersController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IFlashMessage flashMessage
+        public UsersController(IUserHelper userHelper, DataContext context, ICombosHelper combosHelper, IFlashMessage flashMessage, IMailHelper mailHelper
            /* IBlobHelper blobHelper*/)
         {
             _userHelper = userHelper;
             _context = context;
             _combosHelper = combosHelper;
             _flashMessage = flashMessage;
+            _mailHelper = mailHelper;
             //_blobHelper = blobHelper;
         }
 
@@ -92,16 +94,16 @@ namespace Shopping.Controllers
                     userid = user.Id,
                     token = myToken
                 }, protocol: HttpContext.Request.Scheme);
-                //TODO: Confirmar usuario por Mail
-                //Response response = _mailHelper.SendMail(//Aquí llamamos el metodo para enviar el correo
-                //    $"{model.FirstName} {model.LastName}",
-                //    model.Username,
-                //    "Shopping - Confirmación de Email",
-                //    $"<h1>Shopping - Confirmación de Email</h1>" +
-                //        $"Para habilitar el usuario por favor hacer click en el siguiente link:, " +
-                //        $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
-                Response response = new Response();
-                response.IsSuccess = true;
+               
+                Response response = _mailHelper.SendMail(//Aquí llamamos el metodo para enviar el correo
+                    $"{model.FirstName} {model.LastName}",
+                    model.Username,
+                    "Shopping - Confirmación de Email",
+                    $"<h1>Shopping - Confirmación de Email</h1>" +
+                        $"Para habilitar el usuario por favor hacer click en el siguiente link:, " +
+                        $"<hr/><br/><p><a href = \"{tokenLink}\">Confirmar Email</a></p>");
+                //Response response = new Response();
+                //response.IsSuccess = true;
 
                 if (response.IsSuccess)
                 {

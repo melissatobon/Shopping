@@ -1,4 +1,5 @@
 ﻿using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 using Shopping.Common;
 
@@ -34,7 +35,8 @@ namespace Shopping.Helpers
 
                 using (SmtpClient client = new SmtpClient())//Creamos un cliente
                 {
-                    client.Connect(smtp, int.Parse(port), false);//Nos conectamos al cliente
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.Connect(smtp, int.Parse(port), SecureSocketOptions.Auto);//Nos conectamos al cliente
                     client.Authenticate(from, password);//Nos autenticamos
                     client.Send(message);//Lo enviamos
                     client.Disconnect(true);//Y nos deconectamos
